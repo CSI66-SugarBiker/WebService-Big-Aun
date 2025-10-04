@@ -8,6 +8,7 @@ import { connectDB } from './config/db.js';
 import { setupSocket } from './lib/socket.js';
 import apiRoutes from './routes/index.js';
 import { errorHandler } from './middleware/error.js';
+import { Server as SocketIOServer } from 'socket.io';
 
 const app = express();
 const server = http.createServer(app);
@@ -22,6 +23,8 @@ app.use(helmet());
 app.use(cors({ origin: env.corsOrigin, credentials: true }));
 app.use(express.json({ limit:'2mb' }));
 
+//health check
+app.get('/health', (req, res) => res.status(200).send('OK'));
 
 // api
 app.use('/api', apiRoutes);
